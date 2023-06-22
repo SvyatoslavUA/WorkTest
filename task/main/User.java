@@ -9,8 +9,8 @@ public class User {
         this.age = age;
     }
 
-    public static User createUser(String name, int age){
-       return new User(name, age);
+    public static User createUser(String name, int age) {
+        return new User(name, age);
     }
 
 
@@ -30,6 +30,13 @@ public class User {
         this.age = age;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", age=" + age +
+                '}';
+    }
 }
 
 

@@ -1,10 +1,10 @@
 package main;
 
-public class RealProduct extends Product{
+public class RealProduct extends Product {
     private double size;
-    private double weight;
+    private int weight;
 
-    public RealProduct(String name, double price, double size, double weight) {
+    public RealProduct(String name, double price, double size, int weight) {
         super(name, price);
         this.size = size;
         this.weight = weight;
@@ -18,11 +18,21 @@ public class RealProduct extends Product{
         this.size = size;
     }
 
-    public double getWeight() {
+    public int getWeight() {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(int weight) {
         this.weight = weight;
+    }
+
+    @Override
+    public String toString() {
+        return "RealProduct{" +
+                "name='" + getName() + '\'' +
+                ", price='" + getPrice() + '\'' +
+                ", size=" + size +
+                ", weight=" + weight +
+                '}';
     }
 }

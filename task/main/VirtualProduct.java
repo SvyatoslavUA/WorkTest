@@ -2,7 +2,7 @@ package main;
 
 import java.time.LocalDate;
 
-public class VirtualProduct extends Product{
+public class VirtualProduct extends Product {
     private String code;
     private LocalDate expirationDate;
 
@@ -26,5 +26,15 @@ public class VirtualProduct extends Product{
 
     public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    @Override
+    public String toString() {
+        return "VirtualProduct{" +
+                "name='" + getName() + '\'' +
+                ", price='" + getPrice() + '\'' +
+                ", code='" + code + '\'' +
+                ", expirationDate=" + expirationDate +
+                '}';
     }
 }

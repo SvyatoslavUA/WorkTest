@@ -2,6 +2,7 @@ package main;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -23,7 +24,7 @@ public class Main {
         Product realProduct2 = ProductFactory.createRealProduct("Product B", 50, 6, 17);
 
         Product virtualProduct1 = ProductFactory.createVirtualProduct("Product C", 100, "xxx", LocalDate.of(2023, 5, 12));
-        Product virtualProduct2 = ProductFactory.createVirtualProduct("Product D", 81.25, "yyy",  LocalDate.of(2024, 6, 20));
+        Product virtualProduct2 = ProductFactory.createVirtualProduct("Product D", 81.25, "yyy", LocalDate.of(2024, 6, 20));
 
 
         //TODO Create Order class with method createOrder
@@ -42,9 +43,15 @@ public class Main {
         // singletonClass.useCode("xxx")
         // boolean isCodeUsed = virtualProductCodeManager.isCodeUsed("xxx") --> true;
         // boolean isCodeUsed = virtualProductCodeManager.isCodeUsed("yyy") --> false;
-        System.out.println("1. Create singleton class VirtualProductCodeManager \n");
-        var isUsed = false;
-        System.out.println("Is code used: " + isUsed + "\n");
+
+        VirtualProductCodeManager.useCode("xxx");
+
+        boolean isCodeUsed = VirtualProductCodeManager.isCodeUsed("xxx");
+        System.out.println("Is code used: " + isCodeUsed);
+
+        boolean isCodeUsed1 = VirtualProductCodeManager.isCodeUsed("yyy");
+        System.out.println("Is code used: " + isCodeUsed1);
+        System.out.println();
 
         //TODO 2). Create a functionality to get the most expensive ordered product
         Product mostExpensive = getMostExpensiveProduct(orders);
@@ -62,7 +69,7 @@ public class Main {
         // who ordered each product as values
         Map<Product, List<User>> productUserMap = getProductUserMap(orders);
         System.out.println("5. Map with products as keys and list of users as value \n");
-        productUserMap.forEach((key, value) -> System.out.println("key: " + key + " " + "value: " +  value + "\n"));
+        productUserMap.forEach((key, value) -> System.out.println("key: " + key + " " + "value: " + value + "\n"));
 
         //TODO 6). Create a functionality to sort/group entities:
         // a) Sort Products by price
@@ -75,34 +82,84 @@ public class Main {
         //TODO 7). Calculate the total weight of each order
         Map<Order, Integer> result = calculateWeightOfEachOrder(orders);
         System.out.println("7. Calculate the total weight of each order \n");
-        result.forEach((key, value) -> System.out.println("order: " + key + " " + "total weight: " +  value + "\n"));
+        result.forEach((key, value) -> System.out.println("order: " + key + " " + "total weight: " + value + "\n"));
     }
 
     private static Product getMostExpensiveProduct(List<Order> orders) {
-        return null;
+        return orders.stream()
+                .flatMap(order -> order.getProductList().stream())
+                .max(Comparator.comparing(Product::getPrice))
+                .orElse(null);
     }
 
     private static Product getMostPopularProduct(List<Order> orders) {
-        return null;
+        List<Product> allProducts = new ArrayList<>();
+
+        orders.forEach(order -> allProducts.addAll(order.getProductList()));
+
+        Map<Product, Integer> productCountMap = new HashMap<>();
+        allProducts.forEach(product -> productCountMap.put(product, productCountMap.getOrDefault(product, 0) + 1));
+
+        return productCountMap.entrySet()
+                .stream()
+                .max(Map.Entry.comparingByValue())
+                .map(Map.Entry::getKey)
+                .orElse(null);
     }
 
     private static double calculateAverageAge(Product product, List<Order> orders) {
-        return 0d;
+        List<User> users = orders.stream()
+                .filter(order -> order.getProductList().contains(product))
+                .map(Order::getUser)
+                .collect(Collectors.toList());
+
+        return users.stream()
+                .mapToInt(User::getAge)
+                .average()
+                .orElse(0);
     }
 
     private static Map<Product, List<User>> getProductUserMap(List<Order> orders) {
-        return new HashMap<>();
+        return orders.stream()
+                .flatMap(order -> order.getProductList().stream()
+                        .map(product -> Map.entry(product, order.getUser())))
+                .collect(Collectors.groupingBy(Map.Entry::getKey,
+                        Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
     }
 
     private static List<Product> sortProductsByPrice(List<Product> products) {
-        return null;
+        return products.stream()
+                .sorted(Comparator.comparingDouble(Product::getPrice))
+                .collect(Collectors.toList());
     }
 
     private static List<Order> sortOrdersByUserAgeDesc(List<Order> orders) {
-        return null;
+        return orders.stream()
+                .sorted(Comparator.comparingInt(order -> -order.getUser().getAge()))
+                .collect(Collectors.toList());
     }
 
     private static Map<Order, Integer> calculateWeightOfEachOrder(List<Order> orders) {
-        return new HashMap<>(Map.of(new Order.OrderBuilder().build(), 0));
+        Map<Product, Integer> productWeightMap = new HashMap<>();
+
+        for (Order order : orders) {
+            for (Product product : order.getProductList()) {
+                if (product instanceof RealProduct realProduct) {
+                    productWeightMap.put(realProduct, realProduct.getWeight());
+                }
+            }
+        }
+
+        Map<Order, Integer> result = new HashMap<>();
+
+        for (Order order : orders) {
+            int totalWeight = order.getProductList().stream()
+                    .filter(productWeightMap::containsKey)
+                    .mapToInt(productWeightMap::get)
+                    .sum();
+            result.put(order, totalWeight);
+        }
+
+        return result;
     }
 }
