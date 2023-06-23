@@ -11,11 +11,11 @@ public class VirtualProductCodeManager {
         usedCodes = new HashSet<>();
     }
 
-    public static void useCode(String code) {
+    public static void useCode(final String code) {
         getInstance().usedCodes.add(code);
     }
 
-    public static boolean isCodeUsed(String code) {
+    public static boolean isCodeUsed(final String code) {
         return getInstance().usedCodes.contains(code);
     }
 

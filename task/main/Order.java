@@ -6,12 +6,12 @@ public class Order {
     private User user;
     private List<Product> productList;
 
-    private Order(User user, List<Product> productList) {
+    private Order(final User user, final List<Product> productList) {
         this.user = user;
         this.productList = productList;
     }
 
-    public static Order createOrder(User user, List<Product> productList) {
+    public static Order createOrder(final User user, final List<Product> productList) {
         return new Order(user, productList);
     }
 
@@ -19,7 +19,7 @@ public class Order {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(final User user) {
         this.user = user;
     }
 
@@ -27,7 +27,7 @@ public class Order {
         return productList;
     }
 
-    public void setProductList(List<Product> productList) {
+    public void setProductList(final List<Product> productList) {
         this.productList = productList;
     }
 

@@ -4,7 +4,7 @@ public class RealProduct extends Product {
     private double size;
     private int weight;
 
-    public RealProduct(String name, double price, double size, int weight) {
+    public RealProduct(final String name, final double price, final double size, final int weight) {
         super(name, price);
         this.size = size;
         this.weight = weight;
@@ -14,7 +14,7 @@ public class RealProduct extends Product {
         return size;
     }
 
-    public void setSize(double size) {
+    public void setSize(final double size) {
         this.size = size;
     }
 
@@ -22,7 +22,7 @@ public class RealProduct extends Product {
         return weight;
     }
 
-    public void setWeight(int weight) {
+    public void setWeight(final int weight) {
         this.weight = weight;
     }
 

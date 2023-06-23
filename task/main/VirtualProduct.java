@@ -6,7 +6,7 @@ public class VirtualProduct extends Product {
     private String code;
     private LocalDate expirationDate;
 
-    public VirtualProduct(String name, double price, String code, LocalDate expirationDate) {
+    public VirtualProduct(final String name, final double price, final String code, final LocalDate expirationDate) {
         super(name, price);
         this.code = code;
         this.expirationDate = expirationDate;
@@ -16,7 +16,7 @@ public class VirtualProduct extends Product {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(final String code) {
         this.code = code;
     }
 
@@ -24,7 +24,7 @@ public class VirtualProduct extends Product {
         return expirationDate;
     }
 
-    public void setExpirationDate(LocalDate expirationDate) {
+    public void setExpirationDate(final LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
 

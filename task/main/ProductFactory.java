@@ -3,11 +3,11 @@ package main;
 import java.time.LocalDate;
 
 public class ProductFactory {
-    public static Product createRealProduct(String name, double price, double size, int weight) {
+    public static Product createRealProduct(final String name, final double price, final double size, final int weight) {
         return new RealProduct(name, price, size, weight);
     }
 
-    public static Product createVirtualProduct(String name, double price, String code, LocalDate expirationDate) {
+    public static Product createVirtualProduct(final String name, final double price, final String code, final LocalDate expirationDate) {
         return new VirtualProduct(name, price, code, expirationDate);
     }
 }
