@@ -35,4 +35,25 @@ public class RealProduct extends Product {
                 ", weight=" + weight +
                 '}';
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final RealProduct that = (RealProduct) o;
+
+        if (Double.compare(that.getSize(), getSize()) != 0) return false;
+        return getWeight() == that.getWeight();
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        final long temp;
+        temp = Double.doubleToLongBits(getSize());
+        result = (int) (temp ^ (temp >>> 32));
+        result = 31 * result + getWeight();
+        return result;
+    }
 }

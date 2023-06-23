@@ -150,26 +150,12 @@ public class Main {
     }
 
     private static Map<Order, Integer> calculateWeightOfEachOrder(final List<Order> orders) {
-        final Map<Product, Integer> productWeightMap = new HashMap<>();
-
-        for (final Order order : orders) {
-            for (final Product product : order.getProductList()) {
-                if (product instanceof final RealProduct realProduct) {
-                    productWeightMap.put(realProduct, realProduct.getWeight());
-                }
-            }
-        }
-
-        final Map<Order, Integer> result = new HashMap<>();
-
-        for (final Order order : orders) {
-            final int totalWeight = order.getProductList().stream()
-                    .filter(productWeightMap::containsKey)
-                    .mapToInt(productWeightMap::get)
-                    .sum();
-            result.put(order, totalWeight);
-        }
-
-        return result;
+        return orders.stream()
+                .collect(Collectors.toMap(order -> order, order -> order.getProductList().stream()
+                                .filter(product -> product instanceof RealProduct)
+                                .map(product -> (RealProduct) product)
+                                .mapToInt(RealProduct::getWeight)
+                                .sum()
+                ));
     }
 }

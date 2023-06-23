@@ -37,6 +37,24 @@ public class User {
                 ", age=" + age +
                 '}';
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final User user = (User) o;
+
+        if (getAge() != user.getAge()) return false;
+        return getName() != null ? getName().equals(user.getName()) : user.getName() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getName() != null ? getName().hashCode() : 0;
+        result = 31 * result + getAge();
+        return result;
+    }
 }
 
 

@@ -38,4 +38,22 @@ public class Order {
                 ", productList=" + productList +
                 '}';
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final Order order = (Order) o;
+
+        if (getUser() != null ? !getUser().equals(order.getUser()) : order.getUser() != null) return false;
+        return getProductList() != null ? getProductList().equals(order.getProductList()) : order.getProductList() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getUser() != null ? getUser().hashCode() : 0;
+        result = 31 * result + (getProductList() != null ? getProductList().hashCode() : 0);
+        return result;
+    }
 }

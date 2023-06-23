@@ -37,4 +37,22 @@ public class VirtualProduct extends Product {
                 ", expirationDate=" + expirationDate +
                 '}';
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        final VirtualProduct that = (VirtualProduct) o;
+
+        if (getCode() != null ? !getCode().equals(that.getCode()) : that.getCode() != null) return false;
+        return getExpirationDate() != null ? getExpirationDate().equals(that.getExpirationDate()) : that.getExpirationDate() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getCode() != null ? getCode().hashCode() : 0;
+        result = 31 * result + (getExpirationDate() != null ? getExpirationDate().hashCode() : 0);
+        return result;
+    }
 }
