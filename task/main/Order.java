@@ -15,15 +15,6 @@ public class Order {
         return new Order(user, productList);
     }
 
-    public static class OrderBuilder {
-        public OrderBuilder() {
-        }
-
-        public Order build() {
-            return null;
-        }
-    }
-
     public User getUser() {
         return user;
     }
